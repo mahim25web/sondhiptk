@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sondhi - Pure & Natural Organic Care</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Hind+Siliguri:wght@300;400;500;600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="script.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  </head>
+<body class="text-slate-900 bg-sand selection:bg-sage selection:text-white">
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/8801575421756" target="_blank" rel="noopener noreferrer" class="fixed bottom-8 right-8 z-[100] bg-[#25D366] text-white w-16 h-16 rounded-full flex items-center justify-center text-3xl shadow-2xl hover:scale-110 transition-transform duration-300">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <!-- Navigation -->
+  <nav class="glass sticky top-0 z-50 border-b border-stone-200/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between h-20 items-center">
+        <h1 class="text-3xl font-bold text-forest tracking-tighter flex items-center cursor-pointer">
+          <span class="text-sage mr-2"><i class="fas fa-leaf"></i></span>Sondhi
+        </h1>
+        <div class="hidden md:flex space-x-10 text-[11px] font-bold uppercase tracking-[0.2em] text-slate-500">
+          <a href="#" class="hover:text-sage transition-colors">Home</a>
+          <a href="#shop" class="hover:text-sage transition-colors">Collection</a>
+          <a href="#process" class="hover:text-sage transition-colors">The Process</a>
+          <a href="#faq" class="hover:text-sage transition-colors">Help</a>
+        </div>
+        <button onclick="openAdminModal()" class="text-[10px] uppercase font-bold tracking-widest text-white bg-forest px-6 py-3 rounded-full hover:bg-sage transition-all shadow-xl shadow-emerald-900/20">Admin</button>
+        </div>
+          </div>
+        </nav>
+  <!-- Hero Section -->
+  <section class="relative py-20 lg:py-32 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="hero-grid lg:grid lg:grid-cols-2 lg:gap-20 items-center">
+        <div class="animate-fade-in">
+          <span class="inline-block text-sage font-bold tracking-[0.3em] uppercase text-[10px] mb-4">Crafted by Nature</span>
+          <h2 class="text-6xl lg:text-8xl font-bold text-forest leading-[0.9] mb-8">
+            বিশুদ্ধতায় <br/><span class="italic font-serif text-sage">সেরা যত্ন</span>
+          </h2>
+          <p class="text-xl text-slate-500 mb-12 max-w-lg leading-relaxed">
+            আমরা বিশ্বাস করি সৌন্দর্যের মূল লুকিয়ে আছে প্রকৃতিতে। আমাদের প্রতিটি প্রোডাক্ট কোনো কৃত্রিম উপাদান ছাড়াই আপনার ত্বকের গভীরে পুষ্টি জোগায়।
+          </p>
+          <div class="flex items-center space-x-6">
+            <a href="#shop" class="bg-forest text-white px-12 py-6 rounded-full font-bold hover:bg-sage transition-all shadow-2xl shadow-emerald-900/30">Shop Now</a>
+            <div class="flex -space-x-3">
+              <div class="w-12 h-12 rounded-full border-4 border-sand bg-slate-200"></div>
+              <div class="w-12 h-12 rounded-full border-4 border-sand bg-slate-300"></div>
+              <div class="w-12 h-12 rounded-full border-4 border-sand bg-slate-400"></div>
+              <div class="flex items-center ml-4 text-xs font-bold text-slate-400 uppercase tracking-widest">+5k Happy Users</div>
+        </div>
+          </div>
+        </div>
+        <div class="mt-20 lg:mt-0 relative">
+          <div class="absolute top-0 -left-10 w-80 h-80 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob"></div>
+          <div class="absolute bottom-0 -right-10 w-80 h-80 bg-amber-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-blob animation-delay-2000"></div>
+          <div class="relative rounded-[60px] overflow-hidden shadow-2xl border-8 border-white">
+            <div class="hero-art aspect-[4/5] flex items-center justify-center overflow-hidden"><img src="oil.png" alt="Sondhi organic herbal hair oil" class="hero-image h-full w-full object-cover" /></div>
+          </div>
+        </div>
+      </div>
+        </div>
+  </section>
+  <!-- Value Propositions (Modern Bar) -->
+  <div class="max-w-7xl mx-auto px-4 -mt-10 relative z-20">
+    <div class="bg-forest rounded-[40px] p-10 grid grid-cols-1 md:grid-cols-3 gap-10 shadow-2xl">
+      <div class="flex flex-col items-center text-center text-white border-b md:border-b-0 md:border-r border-white/10 pb-10 md:pb-0 md:pr-10">
+        <i class="fas fa-certificate text-sage text-3xl mb-4"></i>
+        <h4 class="font-bold text-lg mb-2">100% Organic</h4>
+        <p class="text-xs text-white/50">রাসায়নিক মুক্ত বিশুদ্ধ উপাদান</p>
+      </div>
+      <div class="flex flex-col items-center text-center text-white border-b md:border-b-0 md:border-r border-white/10 pb-10 md:pb-0 md:pr-10">
+        <i class="fas fa-truck-loading text-sage text-3xl mb-4"></i>
+        <h4 class="font-bold text-lg mb-2">Fast Delivery</h4>
+        <p class="text-xs text-white/50">সারা দেশে দ্রুত শিপিং</p>
+    </div>
+      <div class="flex flex-col items-center text-center text-white">
+        <i class="fas fa-shield-alt text-sage text-3xl mb-4"></i>
+        <h4 class="font-bold text-lg mb-2">Secure COD</h4>
+        <p class="text-xs text-white/50">পণ্য বুঝে পেয়ে মূল্য পরিশোধ</p>
+        </div>
+      </div>
+        </div>
+  <!-- The Process (Story) -->
+  <section id="process" class="py-32 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+      <div class="grid lg:grid-cols-2 gap-20 items-center">
+        <div class="order-2 lg:order-1">
+          <div class="grid grid-cols-2 gap-6">
+            <div class="h-64 rounded-3xl bg-stone-50 flex items-center justify-center text-5xl">🍯</div>
+            <div class="h-64 mt-12 rounded-3xl bg-stone-50 flex items-center justify-center text-5xl">🥥</div>
+        </div>
+      </div>
+        <div class="order-1 lg:order-2">
+          <h3 class="text-sage font-bold tracking-[0.2em] uppercase text-[10px] mb-6">Our Philosophy</h3>
+          <h2 class="text-5xl font-bold text-forest mb-8 leading-tight">ধীরস্থিরভাবে তৈরি, <br/>সবটুকু খাঁটি</h2>
+          <p class="text-slate-500 leading-relaxed mb-8">
+            সন্ধি মানেই হলো সজীবতা। আমরা কোনো বড় ফ্যাক্টরিতে মাস-প্রোডাকশন করি না। আমাদের প্রতিটি ব্যাচ খুব অল্প পরিমাণে নিজ হাতে তৈরি করা হয়, যাতে মান থাকে শতভাগ অটুট।
+          </p>
+          <ul class="space-y-4">
+            <li class="flex items-center text-forest font-semibold"><i class="fas fa-check-circle text-sage mr-3"></i> কোনো সিন্থেটিক সুগন্ধি নেই</li>
+            <li class="flex items-center text-forest font-semibold"><i class="fas fa-check-circle text-sage mr-3"></i> প্যারাবেন ও সালফেট মুক্ত</li>
+            <li class="flex items-center text-forest font-semibold"><i class="fas fa-check-circle text-sage mr-3"></i> ক্রুয়েল্টি-ফ্রি (প্রাণীজ উপাদান মুক্ত)</li>
+          </ul>
+                </div>
+                </div>
+                </div>
+  </section>
+  <!-- Product Catalog (Updated) -->
+  <section id="shop" class="py-32 bg-sand">
+    <div class="max-w-7xl mx-auto px-4 text-center mb-20">
+      <h2 class="text-5xl font-bold text-forest">Shop Catalog</h2>
+      <div class="w-24 h-1 bg-sage mx-auto mt-6 rounded-full"></div>
+                </div>
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10">
+      <!-- Product Card Template -->
+      <div class="product-card group relative bg-white p-6 rounded-[48px] border border-stone-100 hover:shadow-2xl transition-all duration-500">
+        <div class="h-80 bg-stone-50 rounded-[40px] flex items-center justify-center mb-8 overflow-hidden">
+          <img src="oil.png" alt="হেয়ার কেয়ার অর্গানিক হারবাল হেয়ার অয়েল" class="product-img h-full w-full object-cover transition-all duration-700" />
+            </div>
+        <h3 class="text-2xl font-bold text-forest mb-2">হেয়ার কেয়ার অর্গানিক হারবাল হেয়ার অয়েল</h3>
+        <p class="text-sm text-slate-400 mb-8 leading-relaxed">চুলের যত্নে প্রাকৃতিক হারবাল অয়েল। পরিমাণ: ২০০ মিলি।</p>
+        <div class="flex items-center justify-between">
+          <span class="text-2xl font-bold text-forest italic">৳ ৫৫০</span>
+          <button onclick="openCheckout('হেয়ার কেয়ার অর্গানিক হারবাল হেয়ার অয়েল')" class="bg-forest text-white px-8 py-4 rounded-2xl font-bold hover:bg-sage transition-all">Order</button>
+        </div>
+    </div>
+      <div class="product-card group relative bg-white p-6 rounded-[48px] border border-stone-100 hover:shadow-2xl transition-all duration-500">
+        <div class="h-80 bg-stone-50 rounded-[40px] flex items-center justify-center mb-8 overflow-hidden">
+          <img src="power.png" alt="আন্ডারফিক্স পাউডার" class="product-img h-full w-full object-cover transition-all duration-700" />
+  </div>
+        <h3 class="text-2xl font-bold text-forest mb-2">আন্ডারফিক্স পাউডার</h3>
+        <p class="text-sm text-slate-400 mb-8 leading-relaxed">ত্বকের যত্নে প্রাকৃতিক পাউডার। পরিমাণ: ৩০ গ্রাম।</p>
+        <div class="flex items-center justify-between">
+          <span class="text-2xl font-bold text-forest italic">৳ ২৫০</span>
+          <button onclick="openCheckout('আন্ডারফিক্স পাউডার')" class="bg-forest text-white px-8 py-4 rounded-2xl font-bold hover:bg-sage transition-all">Order</button>
+        </div>
+      </div>
+      <div class="product-card group relative bg-white p-6 rounded-[48px] border border-stone-100 hover:shadow-2xl transition-all duration-500">
+        <div class="h-80 bg-stone-50 rounded-[40px] flex items-center justify-center mb-8 overflow-hidden">
+          <img src="../mehendi.png" alt="সন্ধি প্রিমিয়াম অর্গানিক মেহেদী" class="product-img product-img-mehendi h-full w-full object-cover transition-all duration-700" />
+        </div>
+        <h3 class="text-2xl font-bold text-forest mb-2">সন্ধি প্রিমিয়াম অর্গানিক মেহেদী</h3>
+        <p class="text-sm text-slate-400 mb-8 leading-relaxed">প্রাকৃতিক পাতায় তৈরি মেহেদী, যা দেয় সুন্দর গাঢ় রঙ। পরিমাণ: ৩০ গ্রাম।</p>
+        <div class="flex items-center justify-between">
+          <span class="text-2xl font-bold text-forest italic">৳ ১২০</span>
+          <button onclick="openCheckout('সন্ধি প্রিমিয়াম অর্গানিক মেহেদী')" class="bg-forest text-white px-8 py-4 rounded-2xl font-bold hover:bg-sage transition-all">Order</button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Testimonials Section -->
+  <section class="py-32 bg-forest overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="text-center mb-20">
+        <h2 class="text-white text-5xl font-bold mb-4">Shared Love</h2>
+        <p class="text-white/40">হাজারো সন্তুষ্ট গ্রাহকের ভালোবাসা</p>
+      </div>
+      <div class="flex space-x-10 animate-fade-in">
+        <div class="flex-none w-80 bg-white/5 border border-white/10 p-10 rounded-[40px]">
+          <div class="flex text-sage mb-6"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+          <p class="text-white/70 italic text-sm mb-8 leading-relaxed">"Hair Oil টা জাস্ট অসাধারণ। আমার চুল পড়া একদম বন্ধ হয়ে গেছে ২ সপ্তাহেই!"</p>
+          <p class="text-white font-bold text-xs uppercase tracking-widest">- নুসরাত ফারিয়া</p>
+        </div>
+        <div class="flex-none w-80 bg-white/5 border border-white/10 p-10 rounded-[40px]">
+            <div class="flex text-sage mb-6"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+            <p class="text-white/70 italic text-sm mb-8 leading-relaxed">"এত সুন্দর মেহেদি আমি আগে দেখিনি। একদম কালচে লাল রঙ এসেছে!"</p>
+            <p class="text-white font-bold text-xs uppercase tracking-widest">- রুকসানা আহমেদ</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Checkout Modal with UI Success -->
+  <div id="checkoutModal" class="fixed inset-0 bg-forest/90 backdrop-blur-md hidden flex items-center justify-center z-[110] p-4">
+    <div class="bg-white rounded-[60px] max-w-xl w-full p-12 relative overflow-hidden transition-all duration-500 shadow-2xl">
+        <button onclick="closeCheckout()" class="absolute top-10 right-10 text-slate-300 hover:text-forest transition text-2xl"><i class="fas fa-times"></i></button>
+        <!-- Order Form View -->
+        <div id="orderFormView">
+            <h3 class="text-4xl font-bold text-forest mb-2">Order Now</h3>
+            <p id="selectedProductDisplay" class="text-sage font-bold uppercase tracking-widest text-[10px] mb-10"></p>
+            <form onsubmit="handleOrderSubmit(event)" class="space-y-4">
+                <input type="hidden" id="productInput" />
+                <input type="text" id="fullName" placeholder="Full Name (নাম)" class="w-full px-8 py-5 rounded-3xl bg-stone-50 border-none outline-none focus:ring-2 focus:ring-sage transition" required />
+                <input type="tel" id="phoneNumber" placeholder="Phone (ফোন নম্বর)" class="w-full px-8 py-5 rounded-3xl bg-stone-50 border-none outline-none focus:ring-2 focus:ring-sage transition" required />
+                <textarea id="address" placeholder="Shipping Address (ঠিকানা)" class="w-full px-8 py-5 rounded-3xl bg-stone-50 border-none outline-none focus:ring-2 focus:ring-sage transition" rows="3" required></textarea>
+                <button type="submit" class="w-full bg-forest text-white py-6 rounded-3xl font-bold hover:bg-sage transition-all shadow-xl shadow-emerald-900/20">Confirm Purchase</button>
+            </form>
+        </div>
+        <!-- Success Message View -->
+        <div id="successView" class="hidden text-center py-10 animate-fade-in">
+            <div class="w-24 h-24 bg-sage text-white rounded-full flex items-center justify-center text-4xl mx-auto mb-8 shadow-2xl animate-bounce">
+                <i class="fas fa-check"></i>
+            </div>
+            <h3 class="text-4xl font-bold text-forest mb-4">অর্ডার সফল!</h3>
+          <p class="text-slate-500 leading-relaxed mb-8">ধন্যবাদ! আপনার অর্ডারটি গ্রহণ করা হয়েছে। আমাদের একজন প্রতিনিধি শীঘ্রই আপনাকে ফোন করবেন।</p>
+            <button onclick="closeCheckout()" class="bg-forest text-white px-10 py-4 rounded-full font-bold">Done</button>
+        </div>
+    </div>
+  </div>
+  <!-- Footers -->
+  <footer class="bg-white pt-32 pb-12 border-t border-stone-100">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+          <h2 class="text-6xl font-bold text-forest mb-8 tracking-tighter">Sondhi</h2>
+      <div class="flex justify-center space-x-8 text-slate-400 mb-16">
+        <a href="https://www.facebook.com/profile.php?id=100091377379888" target="_blank" rel="noopener noreferrer" class="hover:text-forest transition"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/sondhi235?igsi=MTVoZXpqazR3YnJyYQ==" target="_blank" rel="noopener noreferrer" class="hover:text-forest transition"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.tiktok.com/@sondhi88?_r=1&_t=ZS-99SOBzHzeXl" target="_blank" rel="noopener noreferrer" class="hover:text-forest transition"><i class="fab fa-tiktok"></i></a>
+      </div>
+      <p class="mb-8 text-sm text-slate-400">Built &amp; Developed by <a href="https://bitxlabs.vercel.app/" target="_blank" rel="noopener noreferrer" class="bitx-credit-button">BitX Labs</a></p>
+      <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-12 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Delivery Info</a>
+      </div>
+      <p class="mt-16 text-slate-300 text-[10px] tracking-widest uppercase">&copy; 2026 Sondhi Pure Organic. All Rights Reserved.</p>
+    </div>
+  </footer>
+  <!-- Admin Panel Auth/Dashboard Modal -->
+  <div id="adminModal" class="fixed inset-0 bg-forest/90 backdrop-blur-md hidden flex items-center justify-center z-[60] p-4">
+    <div class="bg-white rounded-[40px] max-w-5xl w-full p-10 shadow-2xl relative overflow-hidden h-[85vh] flex flex-col">
+      <button onclick="closeAdminModal()" class="absolute top-8 right-8 text-slate-300 hover:text-forest transition text-3xl"><i class="fas fa-times"></i></button>
+      <!-- Login View -->
+      <div id="adminLoginView" class="max-w-sm mx-auto my-auto text-center">
+        <div class="w-20 h-20 bg-emerald-50 text-sage rounded-3xl flex items-center justify-center text-3xl mx-auto mb-8">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h3 class="text-3xl font-bold text-forest mb-4">এডমিন লগইন</h3>
+        <p class="text-sm text-slate-400 mb-8">অর্ডার তালিকা দেখতে লগইন করুন</p>
+        <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+          <input type="email" id="adminEmail" placeholder="Email" class="w-full px-6 py-4 rounded-2xl bg-stone-50 border border-stone-200 focus:border-sage outline-none transition" required />
+          <input type="password" id="adminPassword" placeholder="Password" class="w-full px-6 py-4 rounded-2xl bg-stone-50 border border-stone-200 focus:border-sage outline-none transition" required />
+          <p id="loginError" class="text-xs text-red-500 hidden text-center">ভুল ইমেইল অথবা পাসওয়ার্ড!</p>
+          <button class="w-full bg-forest text-white py-4 rounded-2xl font-bold hover:bg-sage transition shadow-lg">Login</button>
+        </form>
+      </div>
+      <!-- Dashboard View -->
+      <div id="adminDashboardView" class="hidden h-full flex flex-col">
+        <div class="flex items-center justify-between mb-8">
+          <h3 class="text-2xl font-bold text-forest">Sondhi - অর্ডার ম্যানেজমেন্ট</h3>
+          <button onclick="adminLogout()" class="px-5 py-2 text-xs font-bold text-red-500 bg-red-50 rounded-full hover:bg-red-500 hover:text-white transition">Logout</button>
+        </div>
+        <div class="flex-1 overflow-auto rounded-3xl border border-stone-100 bg-stone-50">
+          <table class="w-full text-left text-sm">
+            <thead>
+              <tr class="text-xs uppercase tracking-widest text-slate-400 border-b border-stone-200">
+                <th class="px-6 py-4">অর্ডার আইডি</th>
+                <th class="px-6 py-4">তারিখ</th>
+                <th class="px-6 py-4">প্রোডাক্ট</th>
+                <th class="px-6 py-4">গ্রাহকের নাম</th>
+                <th class="px-6 py-4">ফোন</th>
+                <th class="px-6 py-4">ঠিকানা</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody" class="divide-y divide-stone-200 bg-white">
+              <!-- Orders injected here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
