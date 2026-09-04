@@ -125,7 +125,7 @@
         <p class="text-sm text-slate-400 mb-8 leading-relaxed">চুলের যত্নে প্রাকৃতিক হারবাল অয়েল। পরিমাণ: ২০০ মিলি।</p>
         <div class="flex items-center justify-between">
           <span class="text-2xl font-bold text-forest italic">৳ ৫৫০</span>
-          <button onclick="openCheckout('হেয়ার কেয়ার অর্গানিক হারবাল হেয়ার অয়েল')" class="bg-forest text-white px-8 py-4 rounded-2xl font-bold hover:bg-sage transition-all">Order</button>
+          <button onclick="openCheckout('হেয়ার কেয়ার অর্গানিক হারবাল হেয়ার অয়েল', 550)" class="bg-forest text-white px-8 py-4 rounded-2xl font-bold hover:bg-sage transition-all">Order</button>
         </div>
     </div>
       <div class="product-card group relative bg-white p-6 rounded-[48px] border border-stone-100 hover:shadow-2xl transition-all duration-500">
@@ -136,7 +136,7 @@
         <p class="text-sm text-slate-400 mb-8 leading-relaxed">ত্বকের যত্নে প্রাকৃতিক পাউডার। পরিমাণ: ৩০ গ্রাম।</p>
         <div class="flex items-center justify-between">
           <span class="text-2xl font-bold text-forest italic">৳ ২৫০</span>
-          <button onclick="openCheckout('আন্ডারফিক্স পাউডার')" class="bg-forest text-white px-8 py-4 rounded-2xl font-bold hover:bg-sage transition-all">Order</button>
+          <button onclick="openCheckout('আন্ডারফিক্স পাউডার', 250)" class="bg-forest text-white px-8 py-4 rounded-2xl font-bold hover:bg-sage transition-all">Order</button>
         </div>
       </div>
       <div class="product-card group relative bg-white p-6 rounded-[48px] border border-stone-100 hover:shadow-2xl transition-all duration-500">
@@ -147,7 +147,7 @@
         <p class="text-sm text-slate-400 mb-8 leading-relaxed">প্রাকৃতিক পাতায় তৈরি মেহেদী, যা দেয় সুন্দর গাঢ় রঙ। পরিমাণ: ৩০ গ্রাম।</p>
         <div class="flex items-center justify-between">
           <span class="text-2xl font-bold text-forest italic">৳ ১২০</span>
-          <button onclick="openCheckout('সন্ধি প্রিমিয়াম অর্গানিক মেহেদী')" class="bg-forest text-white px-8 py-4 rounded-2xl font-bold hover:bg-sage transition-all">Order</button>
+          <button onclick="openCheckout('সন্ধি প্রিমিয়াম অর্গানিক মেহেদী', 120)" class="bg-forest text-white px-8 py-4 rounded-2xl font-bold hover:bg-sage transition-all">Order</button>
         </div>
       </div>
     </div>
@@ -181,11 +181,18 @@
         <div id="orderFormView">
             <h3 class="text-4xl font-bold text-forest mb-2">Order Now</h3>
             <p id="selectedProductDisplay" class="text-sage font-bold uppercase tracking-widest text-[10px] mb-10"></p>
+            <div id="cartItems" class="cart-items mb-6"></div>
+            <div class="checkout-total mb-6">
+              <span>Subtotal</span>
+              <strong id="subtotalDisplay">৳ ০</strong>
+            </div>
+            <button type="button" onclick="addMoreProducts()" class="add-more-button mb-6"><i class="fas fa-plus"></i> Add More Products</button>
             <form onsubmit="handleOrderSubmit(event)" class="space-y-4">
                 <input type="hidden" id="productInput" />
                 <input type="text" id="fullName" placeholder="Full Name (নাম)" class="w-full px-8 py-5 rounded-3xl bg-stone-50 border-none outline-none focus:ring-2 focus:ring-sage transition" required />
                 <input type="tel" id="phoneNumber" placeholder="Phone (ফোন নম্বর)" class="w-full px-8 py-5 rounded-3xl bg-stone-50 border-none outline-none focus:ring-2 focus:ring-sage transition" required />
                 <textarea id="address" placeholder="Shipping Address (ঠিকানা)" class="w-full px-8 py-5 rounded-3xl bg-stone-50 border-none outline-none focus:ring-2 focus:ring-sage transition" rows="3" required></textarea>
+                <input type="text" id="promoCode" placeholder="Promo Code (যদি থাকে)" class="w-full px-8 py-5 rounded-3xl bg-stone-50 border-none outline-none focus:ring-2 focus:ring-sage transition" />
                 <button type="submit" class="w-full bg-forest text-white py-6 rounded-3xl font-bold hover:bg-sage transition-all shadow-xl shadow-emerald-900/20">Confirm Purchase</button>
             </form>
         </div>
@@ -242,16 +249,19 @@
           <h3 class="text-2xl font-bold text-forest">Sondhi - অর্ডার ম্যানেজমেন্ট</h3>
           <button onclick="adminLogout()" class="px-5 py-2 text-xs font-bold text-red-500 bg-red-50 rounded-full hover:bg-red-500 hover:text-white transition">Logout</button>
         </div>
-        <div class="flex-1 overflow-auto rounded-3xl border border-stone-100 bg-stone-50">
-          <table class="w-full text-left text-sm">
+        <div class="orders-table-shell flex-1 overflow-auto rounded-3xl border border-stone-100 bg-stone-50">
+          <table class="orders-table w-full text-left text-sm">
             <thead>
               <tr class="text-xs uppercase tracking-widest text-slate-400 border-b border-stone-200">
                 <th class="px-6 py-4">অর্ডার আইডি</th>
                 <th class="px-6 py-4">তারিখ</th>
                 <th class="px-6 py-4">প্রোডাক্ট</th>
+                <th class="px-6 py-4">পরিমাণ</th>
                 <th class="px-6 py-4">গ্রাহকের নাম</th>
                 <th class="px-6 py-4">ফোন</th>
                 <th class="px-6 py-4">ঠিকানা</th>
+                <th class="px-6 py-4">প্রমো কোড</th>
+                <th class="px-6 py-4">সাবটোটাল</th>
               </tr>
             </thead>
             <tbody id="ordersTableBody" class="divide-y divide-stone-200 bg-white">
