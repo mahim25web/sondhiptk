@@ -147,6 +147,34 @@ section.relative.py-20::before {
 
 .animate-blob { display: none; }
 
+@keyframes sharedLoveSlide {
+	0%, 5% { opacity: 0; transform: translateX(18px); }
+	8%, 22% { opacity: 1; transform: translateX(0); }
+	25%, 100% { opacity: 0; transform: translateX(-18px); }
+}
+
+@media (max-width: 767px) {
+	.shared-love-carousel {
+		position: relative;
+		display: block;
+		min-height: 260px;
+	}
+	.shared-love-card {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		animation: sharedLoveSlide 8s infinite;
+	}
+	.shared-love-card:nth-child(2) { animation-delay: 2s; }
+	.shared-love-card:nth-child(3) { animation-delay: 4s; }
+	.shared-love-card:nth-child(4) { animation-delay: 6s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.shared-love-card { animation: none; }
+	.shared-love-card:not(:first-child) { display: none; }
+}
+
 .hero-art {
 	position: relative;
 	width: 100%;
