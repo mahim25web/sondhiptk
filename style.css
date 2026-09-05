@@ -12,6 +12,19 @@
 	--rose-ink: #8b514b;
 }
 
+	html[data-theme="dark"] {
+		--forest: #dce9df;
+		--forest-deep: #081b12;
+		--sage: #a6c6aa;
+		--sage-light: #1d3b2b;
+		--sand: #0c2117;
+		--ink: #e8f0e9;
+		--muted: #b0c0b3;
+		--line: #345443;
+		--blush: #3c2d2a;
+		--rose-ink: #efb4a9;
+	}
+
 html { scroll-behavior: smooth; }
 body {
 	background: var(--sand);
@@ -19,6 +32,38 @@ body {
 	font-family: 'Inter', 'Hind Siliguri', sans-serif;
 	line-height: 1.6;
 }
+
+html[data-theme="dark"] body { background-color: var(--sand) !important; color: var(--ink); }
+html[data-theme="dark"] .glass { background: rgba(10, 32, 22, .88); }
+html[data-theme="dark"] .bg-white,
+html[data-theme="dark"] .bg-stone-50 { background-color: #102b1e !important; }
+html[data-theme="dark"] .text-slate-900,
+html[data-theme="dark"] .text-slate-500,
+html[data-theme="dark"] .text-slate-400 { color: #b9c9bc !important; }
+html[data-theme="dark"] .border-stone-100,
+html[data-theme="dark"] .border-stone-200\/60 { border-color: var(--line) !important; }
+html[data-theme="dark"] input,
+html[data-theme="dark"] textarea { background-color: #183526 !important; color: var(--ink); }
+html[data-theme="dark"] section.relative.py-20 { background: linear-gradient(135deg, #0c2117 0%, #123523 58%, #3c2d2a 100%); }
+html[data-theme="dark"] section.bg-white,
+html[data-theme="dark"] footer.bg-white { background-color: #102b1e !important; }
+html[data-theme="dark"] #checkoutModal > div,
+html[data-theme="dark"] #adminModal > div { background-color: #102b1e !important; }
+
+.theme-toggle {
+	display: inline-flex;
+	width: 2.75rem;
+	height: 2.75rem;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--line);
+	border-radius: 999px;
+	background: var(--sage-light);
+	color: var(--forest);
+	font-size: .95rem;
+	transition: transform 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+.theme-toggle:hover { transform: translateY(-2px) rotate(8deg); }
 
 h1, h2, h3, h4 { font-family: 'Cormorant Garamond', Georgia, serif; }
 h2 { letter-spacing: -0.02em; }

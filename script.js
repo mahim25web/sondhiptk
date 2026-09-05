@@ -13,6 +13,26 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+function updateThemeToggle() {
+  const isDark = document.documentElement.dataset.theme === 'dark';
+  const toggle = document.getElementById('themeToggle');
+  if (!toggle) {
+    return;
+  }
+  toggle.innerHTML = `<i class="fas fa-${isDark ? 'sun' : 'moon'}" aria-hidden="true"></i>`;
+  toggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+  toggle.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+}
+
+function toggleTheme() {
+  const nextTheme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = nextTheme;
+  localStorage.setItem('sondhi_theme', nextTheme);
+  updateThemeToggle();
+}
+
+window.addEventListener('DOMContentLoaded', updateThemeToggle);
+
 const getLocalOrders = () => JSON.parse(localStorage.getItem('sondhi_orders') || '[]');
 const saveLocalOrder = (order) => {
   const orders = getLocalOrders();

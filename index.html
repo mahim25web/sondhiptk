@@ -25,6 +25,7 @@
           }
       }
     };
+    document.documentElement.dataset.theme = localStorage.getItem('sondhi_theme') || 'light';
   </script>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -52,6 +53,9 @@
           <a href="#process" class="hover:text-sage transition-colors">The Process</a>
           <a href="#faq" class="hover:text-sage transition-colors">Help</a>
         </div>
+        <button id="themeToggle" type="button" onclick="toggleTheme()" class="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
+          <i class="fas fa-moon" aria-hidden="true"></i>
+        </button>
         <button onclick="openAdminModal()" class="text-[10px] uppercase font-bold tracking-widest text-white bg-forest px-6 py-3 rounded-full hover:bg-sage transition-all shadow-xl shadow-emerald-900/20">Admin</button>
         </div>
           </div>
