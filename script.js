@@ -13,8 +13,15 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
+const getLocalOrders = () => JSON.parse(localStorage.getItem('sondhi_orders') || '[]');
+const saveLocalOrder = (order) => {
+  const orders = getLocalOrders();
+  orders.unshift(order);
+  localStorage.setItem('sondhi_orders', JSON.stringify(orders));
+};
+
 // ২. অর্ডার Firebase-এ সেভ করার ফাংশন
-async function handleOrderSubmit(e) {
+function handleOrderSubmit(e) {
   e.preventDefault();
   
   const newOrder = {
@@ -31,17 +38,14 @@ async function handleOrderSubmit(e) {
     subtotal: getCartSubtotal()
   };
 
-  try {
-    // Firestore-এর 'orders' কালেকশনে ডাটা সেভ
-    await db.collection('orders').add(newOrder);
+  saveLocalOrder({ ...newOrder, createdAt: new Date().toISOString() });
+  document.getElementById('orderFormView').classList.add('hidden');
+  document.getElementById('successView').classList.remove('hidden');
+  cart = [];
 
-    document.getElementById('orderFormView').classList.add('hidden');
-    document.getElementById('successView').classList.remove('hidden');
-    cart = [];
-  } catch (error) {
-    console.error("Order submission error: ", error);
-    alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে! অনুগ্রহ করে আবার চেষ্টা করুন।");
-  }
+  db.collection('orders').add(newOrder).catch((error) => {
+    console.error('Firebase order sync error:', error);
+  });
 }
 
 // ৪. এডমিন প্যানেলে রিয়েলটাইম ডাটা দেখানোর ফাংশন (renderOrders আপডেট করুন)
@@ -49,15 +53,31 @@ function renderOrders() {
   const tbody = document.getElementById('ordersTableBody');
   tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">অর্ডার লোড হচ্ছে...</td></tr>';
 
+  const localOrders = getLocalOrders();
+  if (localOrders.length > 0) {
+    renderOrderRows(localOrders, tbody);
+  }
+
   // onSnapshot ব্যবহার করায় নতুন অর্ডার আসলেই টেবিল নিজে থেকেই আপডেট হয়ে যাবে
   db.collection('orders').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
     if (snapshot.empty) {
-      tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
+      if (localOrders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
+      }
       return;
     }
 
-    tbody.innerHTML = snapshot.docs.map(doc => {
-      const o = doc.data();
+    renderOrderRows(snapshot.docs.map((doc) => doc.data()), tbody);
+  }, (error) => {
+    console.error('Firebase order read error:', error);
+    if (localOrders.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">অর্ডার লোড করা যায়নি।</td></tr>';
+    }
+  });
+}
+
+function renderOrderRows(orders, tbody) {
+  tbody.innerHTML = orders.map((o) => {
       return `
         <tr class="hover:bg-stone-50 transition">
           <td class="px-6 py-5 font-mono text-xs text-sage">${o.id || 'N/A'}</td>
@@ -72,7 +92,6 @@ function renderOrders() {
         </tr>
       `;
     }).join('');
-  });
 }
 
 let cart = [];
