@@ -145,6 +145,9 @@ button:hover, a.bg-forest:hover { transform: translateY(-2px); }
 a.bg-forest, button.bg-forest { box-shadow: 0 12px 24px rgba(23, 59, 43, .16); }
 .text-sage { color: var(--sage); }
 .text-forest { color: var(--forest); }
+.bg-forest { background-color: var(--forest-deep); }
+.bg-sand { background-color: var(--sand); }
+.bg-sage { background-color: var(--sage); }
 
 section.bg-forest { background: linear-gradient(135deg, var(--forest-deep), var(--forest)); }
 section.bg-forest .text-sage { color: #e2b6a9; }

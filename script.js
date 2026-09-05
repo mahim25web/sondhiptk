@@ -1,24 +1,80 @@
-tailwind.config = {
-  theme: {
-    extend: {
-      fontFamily: { sans: ['Inter', 'Hind Siliguri', 'sans-serif'], serif: ['Georgia', 'serif'] },
-      colors: { forest: '#0d2818', sage: '#2d6a4f', emerald: '#1b4332', sand: '#fcfaf7', accent: '#d4a373' },
-      animation: { 'blob': 'blob 7s infinite', 'fade-in': 'fadeIn 0.5s ease-out' },
-      keyframes: {
-        blob: {
-          '0%': { transform: 'translate(0px, 0px) scale(1)' },
-          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-          '100%': { transform: 'translate(0px, 0px) scale(1)' },
-        },
-        fadeIn: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } }
-      }
-    }
-  }
+// ১. ফায়ারবেস কনফিগারেশন (ছবি থেকে নেওয়া ডাটা)
+const firebaseConfig = {
+  apiKey: "AIzaSyCzAK0IH10btuzOpoXb_KBhWYqktk-5J80",
+  authDomain: "sondhiptk-86389.firebaseapp.com",
+  projectId: "sondhiptk-86389",
+  storageBucket: "sondhiptk-86389.firebasestorage.app",
+  messagingSenderId: "1028560106293",
+  appId: "1:1028560106293:web:8e852e186ac05ca900d27c",
+  measurementId: "G-KSHYYRDLCM"
 };
 
-const getOrders = () => JSON.parse(localStorage.getItem('sondhi_orders') || '[]');
-const saveOrders = (orders) => localStorage.setItem('sondhi_orders', JSON.stringify(orders));
+// ২. CDN ফ্রন্টএন্ডের জন্য ইনিশিয়ালাইজেশন
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ২. অর্ডার Firebase-এ সেভ করার ফাংশন
+async function handleOrderSubmit(e) {
+  e.preventDefault();
+  
+  const newOrder = {
+    id: 'SND-' + Math.floor(1000 + Math.random() * 9000),
+    date: new Date().toLocaleDateString('bn-BD'),
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(), // ক্রমানুসারে সাজানোর জন্য
+    product: cart.map((item) => `${item.product} × ${item.quantity}`).join(', '),
+    name: document.getElementById('fullName').value,
+    phone: document.getElementById('phoneNumber').value,
+    address: document.getElementById('address').value,
+    promoCode: document.getElementById('promoCode').value.trim() || 'N/A',
+    items: cart.map((item) => ({ ...item })),
+    quantity: cart.reduce((total, item) => total + item.quantity, 0),
+    subtotal: getCartSubtotal()
+  };
+
+  try {
+    // Firestore-এর 'orders' কালেকশনে ডাটা সেভ
+    await db.collection('orders').add(newOrder);
+
+    document.getElementById('orderFormView').classList.add('hidden');
+    document.getElementById('successView').classList.remove('hidden');
+    cart = [];
+  } catch (error) {
+    console.error("Order submission error: ", error);
+    alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে! অনুগ্রহ করে আবার চেষ্টা করুন।");
+  }
+}
+
+// ৪. এডমিন প্যানেলে রিয়েলটাইম ডাটা দেখানোর ফাংশন (renderOrders আপডেট করুন)
+function renderOrders() {
+  const tbody = document.getElementById('ordersTableBody');
+  tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">অর্ডার লোড হচ্ছে...</td></tr>';
+
+  // onSnapshot ব্যবহার করায় নতুন অর্ডার আসলেই টেবিল নিজে থেকেই আপডেট হয়ে যাবে
+  db.collection('orders').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
+    if (snapshot.empty) {
+      tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = snapshot.docs.map(doc => {
+      const o = doc.data();
+      return `
+        <tr class="hover:bg-stone-50 transition">
+          <td class="px-6 py-5 font-mono text-xs text-sage">${o.id || 'N/A'}</td>
+          <td class="px-6 py-5">${o.date || ''}</td>
+          <td class="px-6 py-5 font-bold">${o.items ? o.items.map((item) => `${item.product} × ${item.quantity}`).join('<br>') : o.product}</td>
+          <td class="px-6 py-5">${o.quantity || 1}</td>
+          <td class="px-6 py-5 font-bold">${o.name}</td>
+          <td class="px-6 py-5 font-mono">${o.phone}</td>
+          <td class="order-address px-6 py-5">${o.address}</td>
+          <td class="px-6 py-5 font-mono text-sage">${o.promoCode || 'N/A'}</td>
+          <td class="px-6 py-5 font-bold text-forest">${formatCurrency(o.subtotal || 0)}</td>
+        </tr>
+      `;
+    }).join('');
+  });
+}
+
 let cart = [];
 
 const formatCurrency = (amount) => `৳ ${amount.toLocaleString('bn-BD')}`;
@@ -69,30 +125,6 @@ function renderCart() {
   `).join('');
 }
 
-function handleOrderSubmit(e) {
-  e.preventDefault();
-  const newOrder = {
-    id: 'SND-' + Math.floor(1000 + Math.random() * 9000),
-    date: new Date().toLocaleDateString('bn-BD'),
-    product: cart.map((item) => `${item.product} × ${item.quantity}`).join(', '),
-    name: document.getElementById('fullName').value,
-    phone: document.getElementById('phoneNumber').value,
-    address: document.getElementById('address').value,
-    promoCode: document.getElementById('promoCode').value.trim() || 'N/A',
-    items: cart.map((item) => ({ ...item })),
-    quantity: cart.reduce((total, item) => total + item.quantity, 0),
-    subtotal: getCartSubtotal()
-  };
-
-  const orders = getOrders();
-  orders.unshift(newOrder);
-  saveOrders(orders);
-
-  document.getElementById('orderFormView').classList.add('hidden');
-  document.getElementById('successView').classList.remove('hidden');
-  cart = [];
-}
-
 function openAdminModal() {
   document.getElementById('adminModal').classList.remove('hidden');
 }
@@ -123,26 +155,3 @@ function adminLogout() {
   document.getElementById('adminPassword').value = '';
 }
 
-function renderOrders() {
-  const orders = getOrders();
-  const tbody = document.getElementById('ordersTableBody');
-
-  if (orders.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = orders.map(o => `
-    <tr class="hover:bg-stone-50 transition">
-      <td class="px-6 py-5 font-mono text-xs text-sage">${o.id}</td>
-      <td class="px-6 py-5">${o.date}</td>
-      <td class="px-6 py-5 font-bold">${o.items ? o.items.map((item) => `${item.product} × ${item.quantity}`).join('<br>') : o.product}</td>
-      <td class="px-6 py-5">${o.quantity || 1}</td>
-      <td class="px-6 py-5 font-bold">${o.name}</td>
-      <td class="px-6 py-5 font-mono">${o.phone}</td>
-      <td class="order-address px-6 py-5">${o.address}</td>
-      <td class="px-6 py-5 font-mono text-sage">${o.promoCode || 'N/A'}</td>
-      <td class="px-6 py-5 font-bold text-forest">${formatCurrency(o.subtotal || 0)}</td>
-    </tr>
-  `).join('');
-}
