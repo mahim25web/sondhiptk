@@ -49,45 +49,45 @@ function handleOrderSubmit(e) {
 }
 
 // ৪. এডমিন প্যানেলে রিয়েলটাইম ডাটা দেখানোর ফাংশন (renderOrders আপডেট করুন)
-function renderOrders() {
+async function renderOrders() {
   const tbody = document.getElementById('ordersTableBody');
-  tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">অর্ডার লোড হচ্ছে...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="8" class="p-10 text-center text-slate-400">অর্ডার লোড হচ্ছে...</td></tr>';
 
   const localOrders = getLocalOrders();
   if (localOrders.length > 0) {
     renderOrderRows(localOrders, tbody);
   }
 
-  // onSnapshot ব্যবহার করায় নতুন অর্ডার আসলেই টেবিল নিজে থেকেই আপডেট হয়ে যাবে
-  db.collection('orders').orderBy('createdAt', 'desc').onSnapshot((snapshot) => {
-    if (snapshot.empty) {
-      if (localOrders.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
-      }
-      return;
-    }
+  try {
+    const remoteSnapshot = await Promise.race([
+      db.collection('orders').orderBy('createdAt', 'desc').get(),
+      new Promise((_, reject) => setTimeout(() => reject(new Error('Firebase request timed out')), 4000))
+    ]);
 
-    renderOrderRows(snapshot.docs.map((doc) => doc.data()), tbody);
-  }, (error) => {
+    if (!remoteSnapshot.empty) {
+      renderOrderRows(remoteSnapshot.docs.map((doc) => doc.data()), tbody);
+    } else if (localOrders.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" class="p-10 text-center text-slate-400">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
+    }
+  } catch (error) {
     console.error('Firebase order read error:', error);
     if (localOrders.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">অর্ডার লোড করা যায়নি।</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="8" class="p-10 text-center text-slate-400">অর্ডার লোড করা যায়নি।</td></tr>';
     }
-  });
+  }
 }
 
 function renderOrderRows(orders, tbody) {
   tbody.innerHTML = orders.map((o) => {
       return `
         <tr class="hover:bg-stone-50 transition">
-          <td class="px-6 py-5 font-mono text-xs text-sage">${o.id || 'N/A'}</td>
+          <td class="px-6 py-5 font-mono text-xs text-sage">${o.promoCode || 'N/A'}</td>
           <td class="px-6 py-5">${o.date || ''}</td>
           <td class="px-6 py-5 font-bold">${o.items ? o.items.map((item) => `${item.product} × ${item.quantity}`).join('<br>') : o.product}</td>
           <td class="px-6 py-5">${o.quantity || 1}</td>
           <td class="px-6 py-5 font-bold">${o.name}</td>
           <td class="px-6 py-5 font-mono">${o.phone}</td>
           <td class="order-address px-6 py-5">${o.address}</td>
-          <td class="px-6 py-5 font-mono text-sage">${o.promoCode || 'N/A'}</td>
           <td class="px-6 py-5 font-bold text-forest">${formatCurrency(o.subtotal || 0)}</td>
         </tr>
       `;
