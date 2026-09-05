@@ -21,9 +21,15 @@ const saveLocalOrder = (order) => {
 };
 
 // ২. অর্ডার Firebase-এ সেভ করার ফাংশন
-function handleOrderSubmit(e) {
+async function handleOrderSubmit(e) {
   e.preventDefault();
-  
+
+  const submitButton = document.getElementById('confirmPurchaseButton');
+  const submitError = document.getElementById('orderSubmitError');
+  submitButton.disabled = true;
+  submitButton.textContent = 'অর্ডার পাঠানো হচ্ছে...';
+  submitError.classList.add('hidden');
+
   const newOrder = {
     id: 'SND-' + Math.floor(1000 + Math.random() * 9000),
     date: new Date().toLocaleDateString('bn-BD'),
@@ -38,24 +44,42 @@ function handleOrderSubmit(e) {
     subtotal: getCartSubtotal()
   };
 
-  saveLocalOrder({ ...newOrder, createdAt: new Date().toISOString() });
-  document.getElementById('orderFormView').classList.add('hidden');
-  document.getElementById('successView').classList.remove('hidden');
-  cart = [];
+  let submissionFinished = false;
+  const completeOrder = () => {
+    if (submissionFinished) {
+      return;
+    }
+    submissionFinished = true;
+    saveLocalOrder({ ...newOrder, createdAt: new Date().toISOString() });
+    document.getElementById('orderFormView').classList.add('hidden');
+    document.getElementById('successView').classList.remove('hidden');
+    cart = [];
 
-  db.collection('orders').add(newOrder).catch((error) => {
+  };
+  const failOrder = (error) => {
+    if (submissionFinished) {
+      return;
+    }
+    submissionFinished = true;
     console.error('Firebase order sync error:', error);
-  });
+    submitError.textContent = 'অর্ডার পাঠানো যায়নি। ইন্টারনেট সংযোগ বা Firebase সেটিংস পরীক্ষা করে আবার চেষ্টা করুন।';
+    submitError.classList.remove('hidden');
+    submitButton.disabled = false;
+    submitButton.textContent = 'Confirm Purchase';
+  };
+
+  db.collection('orders').add(newOrder).then(completeOrder).catch(failOrder);
+  window.setTimeout(() => failOrder(new Error('Order request timed out')), 10000);
 }
 
 // ৪. এডমিন প্যানেলে রিয়েলটাইম ডাটা দেখানোর ফাংশন (renderOrders আপডেট করুন)
 async function renderOrders() {
   const tbody = document.getElementById('ordersTableBody');
-  tbody.innerHTML = '<tr><td colspan="8" class="p-10 text-center text-slate-400">অর্ডার লোড হচ্ছে...</td></tr>';
+  tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">অর্ডার লোড হচ্ছে...</td></tr>';
 
   const localOrders = getLocalOrders();
   if (localOrders.length > 0) {
-    renderOrderRows(localOrders, tbody);
+    renderOrderRows(localOrders.map((order) => ({ ...order, source: 'local' })), tbody);
   }
 
   try {
@@ -65,20 +89,22 @@ async function renderOrders() {
     ]);
 
     if (!remoteSnapshot.empty) {
-      renderOrderRows(remoteSnapshot.docs.map((doc) => doc.data()), tbody);
+      renderOrderRows(remoteSnapshot.docs.map((doc) => ({ ...doc.data(), firestoreId: doc.id, source: 'firebase' })), tbody);
     } else if (localOrders.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="p-10 text-center text-slate-400">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">এখনো কোনো অর্ডার পাওয়া যায়নি।</td></tr>';
     }
   } catch (error) {
     console.error('Firebase order read error:', error);
     if (localOrders.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="8" class="p-10 text-center text-slate-400">অর্ডার লোড করা যায়নি।</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" class="p-10 text-center text-slate-400">অর্ডার লোড করা যায়নি।</td></tr>';
     }
   }
 }
 
 function renderOrderRows(orders, tbody) {
   tbody.innerHTML = orders.map((o) => {
+  const orderKey = encodeURIComponent(o.id || '');
+  const firestoreKey = encodeURIComponent(o.firestoreId || '');
       return `
         <tr class="hover:bg-stone-50 transition">
           <td class="px-6 py-5 font-mono text-xs text-sage">${o.promoCode || 'N/A'}</td>
@@ -89,9 +115,33 @@ function renderOrderRows(orders, tbody) {
           <td class="px-6 py-5 font-mono">${o.phone}</td>
           <td class="order-address px-6 py-5">${o.address}</td>
           <td class="px-6 py-5 font-bold text-forest">${formatCurrency(o.subtotal || 0)}</td>
+          <td class="px-6 py-5">
+            <button type="button" class="delete-order-button" onclick="deleteOrder('${orderKey}', '${firestoreKey}')" aria-label="Delete order">মুছুন</button>
+          </td>
         </tr>
       `;
     }).join('');
+}
+
+async function deleteOrder(encodedOrderId, encodedFirestoreId) {
+  const orderId = decodeURIComponent(encodedOrderId);
+  const firestoreId = decodeURIComponent(encodedFirestoreId);
+  if (!window.confirm('এই অর্ডারটি মুছে ফেলতে চান?')) {
+    return;
+  }
+
+  const remainingOrders = getLocalOrders().filter((order) => order.id !== orderId);
+  localStorage.setItem('sondhi_orders', JSON.stringify(remainingOrders));
+
+  if (firestoreId) {
+    try {
+      await db.collection('orders').doc(firestoreId).delete();
+    } catch (error) {
+      console.error('Firebase order delete error:', error);
+    }
+  }
+
+  await renderOrders();
 }
 
 let cart = [];
