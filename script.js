@@ -193,7 +193,12 @@ function addMoreProducts() {
 }
 
 function updateQuantity(index, quantity) {
-  cart[index].quantity = Math.max(1, Number(quantity) || 1);
+  const nextQuantity = Number(quantity);
+  if (nextQuantity === 0) {
+    cart.splice(index, 1);
+  } else {
+    cart[index].quantity = Math.max(1, nextQuantity || 1);
+  }
   renderCart();
 }
 
@@ -207,7 +212,7 @@ function renderCart() {
     <div class="cart-item">
       <div class="cart-item-name">${item.product}</div>
       <div class="cart-item-controls">
-        <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity(${index}, this.value)" aria-label="Quantity for ${item.product}" />
+        <input type="number" min="0" value="${item.quantity}" onchange="updateQuantity(${index}, this.value)" aria-label="Quantity for ${item.product}" />
         <span>${formatCurrency(item.price * item.quantity)}</span>
       </div>
     </div>
